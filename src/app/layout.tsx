@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import {Plus_Jakarta_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "./layout/Navbar";
 import { ToastContainer } from "react-toastify";
+import Footer from "./layout/Footer";
 
 const PlusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-Plus_Jakarta_Sans",
@@ -20,11 +21,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${PlusJakartaSans.className}  h-full antialiased`}
     >
+      <head>
+        <link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.1/css/all.min.css" 
+        integrity="sha512-QeR2VH+lsBE5LSAe1Q5EnTBbe7XTBubt8dG93Y7gidSgdMCr8nVqKcfKAMyN96SV8KDbZVTDXChatu5G2KQGzg==" 
+        crossOrigin="anonymous" referrerPolicy="no-referrer"></link>
+      </head>
       <body className="min-h-full flex flex-col">
-        <Navbar/>
+        <Navbar />
         {children}
+        <Footer />
         <ToastContainer />
-        </body>
+      </body>
     </html>
   );
 }

@@ -1,142 +1,91 @@
 "use client"
 
 import * as React from "react"
-import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import {
   ArrowRight,
-  DollarSign,
-  Flame,
-  MapPin,
-  Search,
-  Sparkles,
-  Sun,
-  Zap,
 } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 
 
-const MOODS = [
-  {
-    id: "daylight",
-    label: "Daylight",
-    icon: Sun,
-    tint: "from-transparent to-transparent",
-  },
-  {
-    id: "golden",
-    label: "Golden Hour",
-    icon: Flame,
-    tint: "from-amber-500/25 via-orange-600/10 to-transparent",
-  },
-  {
-    id: "rgb",
-    label: "Cine RGB",
-    icon: Zap,
-    tint: "from-fuchsia-600/30 via-indigo-600/20 to-cyan-500/20",
-  },
-] as const
-
-type MoodId = (typeof MOODS)[number]["id"]
-
-const CATEGORIES = [
-  { value: "all", label: "All Categories" },
-  { value: "photo", label: "Photo Studios" },
-  { value: "podcast", label: "Podcast Suites" },
-  { value: "film", label: "Film Stages" },
-  { value: "mastering", label: "Mastering Rooms" },
-]
-
-const TRENDING = [
-  "Daylight Lofts",
-  "Soundproof Stages",
-  "4K Podcast Suites",
-  "Sprung Dance Floors",
-]
 
 export default function HeroBanner() {
-  const router = useRouter()
-  const [mood, setMood] = React.useState<MoodId>("daylight")
-  const [category, setCategory] = React.useState("all")
-  const [location, setLocation] = React.useState("")
-  const [budget, setBudget] = React.useState("")
-
-  const activeTint = MOODS.find((m) => m.id === mood)!.tint
-
-  const onSearch = (e: React.FormEvent) => {
-    e.preventDefault()
-    const params = new URLSearchParams()
-    if (category !== "all") params.set("category", category)
-    if (location.trim()) params.set("location", location.trim())
-    if (budget) params.set("maxRate", budget)
-    router.push(`/explore?${params.toString()}`)
-  }
 
   return (
-    <section className="relative isolate overflow-hidden bg-neutral-950 text-white">
+    <section className="relative isolate flex min-h-[92vh] items-end overflow-hidden bg-neutral-950 text-white">
       {/* Background photo, desaturated */}
-      <Image
-        src="/images/hero-studio.jpg"
+      <img
+        src="https://images.unsplash.com/photo-1617463874381-85b513b3e991?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
         alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="-z-30 object-cover grayscale"
+        className="absolute inset-0 -z-30 h-full w-full object-cover object-center grayscale"
       />
-      <div className="absolute inset-0 -z-20 bg-neutral-950/80" />
-      {/* Lighting mood tint */}
+
+      {/* Dark base so text stays readable */}
+      <div className="absolute inset-0 -z-20 bg-gradient-to-t from-neutral-950 via-neutral-950/55 to-neutral-950/20" />
+
+      {/* Daylight beam falling in from the upper right window */}
       <div
-        className={cn(
-          "absolute inset-0 -z-10 bg-gradient-to-br mix-blend-screen transition-all duration-700",
-          activeTint
-        )}
+        aria-hidden
+        className="pointer-events-none absolute -right-24 -top-32 -z-10 h-[140%] w-[70%] origin-top-right -rotate-[18deg] bg-gradient-to-b from-amber-100/30 via-amber-100/10 to-transparent blur-2xl"
       />
 
-      <div className=" px-6 py-14 lg:py-16">
+      {/* Steel window mullions casting shadow lines across the scene */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 opacity-60 [background-image:linear-gradient(to_right,rgba(255,255,255,0.14)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.14)_1px,transparent_1px)] [background-size:25%_33.333%] [mask-image:linear-gradient(to_bottom_left,black,transparent_70%)]"
+      />
+      <div
+        aria-hidden
+        className="pointer-events-none absolute right-0 top-0 -z-10 h-full w-px bg-gradient-to-b from-amber-300/60 via-white/10 to-transparent"
+      />
 
+      <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 pb-16 pt-32 lg:grid-cols-[1fr_auto] lg:items-end lg:pb-20">
+        {/* Left: headline + copy + CTA */}
+        <div>
+          <h1 className="max-w-4xl text-5xl font-bold leading-[0.98] tracking-[-0.03em] sm:text-7xl lg:text-8xl">
+            Where Vision Meets
+            <span className="block text-white/45">Production Space.</span>
+          </h1>
 
-        <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-14">
-          {/* Left column */}
-          <div className="lg:pt-12">
-            <h1 className="text-5xl font-bold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl">
-              Where Vision Meets Production Space.
-            </h1>
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/75">
+            Rent world-class daylight infinity cycloramas, acoustic film
+            stages, podcast suites, and mastering rooms by the hour with
+            guaranteed host liability protection.
+          </p>
 
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-white/75">
-              Rent world-class daylight infinity cycloramas, acoustic film
-              stages, podcast suites, and mastering rooms by the hour with
-              guaranteed host liability protection.
-            </p>
-
-            <p className="mt-4 flex items-center gap-2 text-xs font-medium text-amber-400">
-              <span className="size-1.5 rounded-full bg-amber-400" />
-              5600K High-CRI natural diffuse daylight through steel industrial
-              windows
-            </p>
-
-
-
-            <Link
-              href={"/studios"}
-              className="flex w-[10%] justify-center items-center mt-2 rounded-xl bg-amber-400 px-8 py-4 text-sm font-semibold text-neutral-950 hover:bg-amber-300"
-            >
-              Explore
+          <Link
+            href="/studios"
+            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-amber-400 py-2 pl-8 pr-2 text-sm font-semibold text-neutral-950 transition-colors hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300"
+          >
+            Explore Studios
+            <span className="grid size-10 place-items-center rounded-full bg-neutral-950 text-amber-400 transition-transform duration-300 group-hover:translate-x-1">
               <ArrowRight className="size-4" />
-            </Link>
-          </div>
+            </span>
+          </Link>
+        </div>
 
+        {/* Right: light reading card */}
+        <div className="w-full max-w-sm rounded-2xl border border-white/15 bg-white/[0.06] p-5 backdrop-blur-md lg:mb-1">
+          <p className="flex items-center gap-2 text-xs font-medium text-amber-400">
+            <span className="relative flex size-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-amber-400/70 motion-reduce:animate-none" />
+              <span className="relative inline-flex size-2 rounded-full bg-amber-400" />
+            </span>
+            5600K High-CRI natural diffuse daylight through steel industrial
+            windows
+          </p>
+
+          {/* Colour temperature scale with marker at 5600K */}
+          <div className="mt-5">
+            <div className="relative h-1.5 rounded-full bg-gradient-to-r from-orange-500 via-amber-200 to-sky-300">
+              <span className="absolute top-1/2 size-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-neutral-950 bg-white shadow-[0_0_0_3px_rgba(251,191,36,0.5)] [left:72%]" />
+            </div>
+            <div className="mt-2 flex justify-between text-[11px] text-white/45">
+              <span>2700K</span>
+              <span>6500K</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

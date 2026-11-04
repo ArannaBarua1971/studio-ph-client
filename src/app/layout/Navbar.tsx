@@ -6,10 +6,11 @@ import {
     CalendarCheck,
     ChevronRight,
     LogOut,
-    type LucideIcon,
+    
 } from "lucide-react";
-import { redirect, usePathname, useRouter } from 'next/navigation';
+import {usePathname, useRouter } from 'next/navigation';
 import { useSession, signOut } from '@/lib/auth-client';
+import Logo from '../components/Logo';
 
 
 
@@ -20,7 +21,8 @@ export default function Navbar() {
     const links = [
         { href: "/", name: "Home" },
         { href: "/studios", name: "Explore Studio" },
-        { href: "/", name: "How it works" }
+        { href: "#howworks", name: "How it works" },
+        {href:"/aboutus",name:"About Us"}
     ]
 
     const subLinks = [
@@ -33,15 +35,7 @@ export default function Navbar() {
         <header className="sticky top-0 z-40 bg-stone-950/90 text-stone-100 backdrop-blur-md border-b border-stone-800/80">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
 
-                <Link
-                    href={"/"}
-                    className="text-xl font-bold tracking-tight text-white flex items-center gap-2.5 whitespace-nowrap shrink-0 hover:text-amber-400 transition-colors cursor-pointer group"
-                >
-                    <div className="w-8 h-8 rounded-lg bg-amber-400 text-stone-950 flex items-center justify-center font-bold font-display text-sm group-hover:scale-105 transition-transform shadow-xs">
-                        SG
-                    </div>
-                    <span className="font-display tracking-tight text-lg">StudioGrid</span>
-                </Link>
+                <Logo/>
 
                 <nav className="hidden md:flex items-center gap-7 text-sm font-medium text-stone-300">
                     {

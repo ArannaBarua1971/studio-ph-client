@@ -10,7 +10,7 @@ async function page({ searchParams }: { searchParams: Promise<{ category: string
     }
     const data = await res.json()
     return (
-        <div className='px-87.5'>
+        <div className='px-87.5 my-10'>
             <header className='space-y-1 pt-10 pb-5'>
                 <p className="text-xs font-semibold text-amber-600 uppercase tracking-wider">Peer-Reviewed Excellence</p>
                 <h1 className='text-2xl sm:text-4xl font-display font-bold text-stone-900 mt-1'>6 Top Rated Studio Spaces</h1>
