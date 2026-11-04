@@ -6,31 +6,52 @@ import { ArrowRight, Eye, Lock, Mail, User, ImageIcon } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { signUp } from "@/lib/auth-client"
+import { signIn, signUp } from "@/lib/auth-client"
 import { redirect } from "next/navigation"
+import showToast from "@/lib/helper/toaster"
+import { useState } from "react"
 
 export default function SignUpPage() {
 
+  function getPasswordError(password: string) {
+    if (password.length < 8) return "Password must be at least 8 characters.";
+    if (!/[A-Z]/.test(password)) return "Password must have an uppercase letter.";
+    if (!/[a-z]/.test(password)) return "Password must have a lowercase letter.";
+    return "";
+  }
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-
     const formData = new FormData(e.currentTarget);
     const data = Object.fromEntries(formData.entries()) as {
       name: string, email: string, password: string, image: string
     }
 
-    const { data:submitData, error } = await signUp.email({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      image: data.image
-    });
+    const error=getPasswordError(data.password)
 
-    if(!error){
-      redirect("/login")
+    if (!error.length) {
+      const { data: submitData, error: er } = await signUp.email({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        image: data.image
+      });
+      if (!er) {
+        showToast({ message: "Sign up successfull" })
+        redirect("/login")
+      }
+      else {
+        showToast({ message: er.message, type: "warning" })
+      }
+    } else {
+      showToast({ message: error, type: "warning" })
     }
-  }
 
+  }
+  const signInWithGoogle = async () => {
+    const data = await signIn.social({
+      provider: "google",
+    });
+  };
   return (
     <main className="flex min-h-screen items-center justify-center bg-neutral-100 p-4 sm:p-8">
       <div className="grid w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow-2xl md:grid-cols-[0.95fr_1.05fr]">
@@ -106,6 +127,7 @@ export default function SignUpPage() {
           <hr className="my-5 border-neutral-100" />
 
           <Button
+            onClick={() => signInWithGoogle()}
             variant="outline"
             className="h-11 w-full rounded-xl border-neutral-300 text-sm font-medium text-neutral-800"
           >
@@ -132,6 +154,7 @@ export default function SignUpPage() {
               <div className="relative">
                 <User className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
                 <Input
+                  required
                   id="name"
                   type="text"
                   name="name"
@@ -147,6 +170,7 @@ export default function SignUpPage() {
               <div className="relative">
                 <Mail className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
                 <Input
+                  required
                   id="email"
                   type="email"
                   name="email"
@@ -162,6 +186,7 @@ export default function SignUpPage() {
               <div className="relative">
                 <ImageIcon className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
                 <Input
+                  required
                   id="name"
                   type="url"
                   name="image"
@@ -180,6 +205,7 @@ export default function SignUpPage() {
               <div className="relative">
                 <Lock className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-neutral-400" />
                 <Input
+                  required
                   name="password"
                   id="password"
                   type="password"

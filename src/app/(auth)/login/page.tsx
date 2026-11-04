@@ -8,27 +8,36 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { signIn } from "@/lib/auth-client"
 import { redirect } from "next/navigation"
+import showToast from "@/lib/helper/toaster"
 
 export default function LoginPage() {
 
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault()
-  
-      const formData = new FormData(e.currentTarget);
-      const data = Object.fromEntries(formData.entries()) as {
-         email: string, password: string
-      }
-  
-      const { data:submitData, error } = await signIn.email({
-        email: data.email,
-        password: data.password,
-      });
-  
-      if(!error){
-        redirect("/")
-      }
+    e.preventDefault()
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries()) as {
+      email: string, password: string
     }
+
+    const { data: submitData, error } = await signIn.email({
+      email: data.email,
+      password: data.password,
+    });
+
+    if (!error) {
+      redirect("/")
+    }else{
+      showToast({message:error.message,type:"warning"})
+    }
+  }
+
+  const signInWithGoogle = async () => {
+    const data = await signIn.social({
+      provider: "google",
+    });
+  };
   return (
     <main className="flex min-h-screen items-center justify-center bg-neutral-100 p-4 sm:p-8">
       <div className="grid w-full max-w-4xl overflow-hidden rounded-3xl bg-white shadow-2xl md:grid-cols-[0.95fr_1.05fr]">
@@ -105,6 +114,7 @@ export default function LoginPage() {
           <Button
             variant="outline"
             className="h-11 w-full rounded-xl border-neutral-300 text-sm font-medium text-neutral-800"
+            onClick={()=> signInWithGoogle()}
           >
             <svg viewBox="0 0 24 24" className="size-[18px]" aria-hidden="true">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1Z" />
@@ -121,7 +131,7 @@ export default function LoginPage() {
             <span className="h-px flex-1 bg-neutral-200" />
           </div>
 
-          <form className="space-y-4" onSubmit={(e)=> handleSubmit(e)}>
+          <form className="space-y-4" onSubmit={(e) => handleSubmit(e)}>
             <div className="space-y-1.5">
               <Label htmlFor="email" className="text-xs font-semibold text-neutral-700">
                 Email Address

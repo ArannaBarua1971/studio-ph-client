@@ -102,7 +102,7 @@ export default function Navbar() {
                                         </li>
                                     })}
                                     <li
-                                        className={`text-black group/item relative flex items-center gap-3 rounded-lg px-3 py-2 whitespace-nowrap bg-red-400`}
+                                        className={`cursor-pointer text-black group/item relative flex items-center gap-3 rounded-lg px-3 py-2 whitespace-nowrap bg-red-400`}
                                         onClick={() => {
                                             signOut({
                                                 fetchOptions: {
@@ -115,8 +115,7 @@ export default function Navbar() {
                                     >
                                         <LogOut
                                             size={16}
-                                            className={`shrink-0 transition-colors"
-                                                }`}
+                                            className={`shrink-0 transition-colors `}
                                         />
                                         <span className="flex-1">Sign Out</span>
 

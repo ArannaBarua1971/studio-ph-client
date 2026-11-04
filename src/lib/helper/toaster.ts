@@ -1,9 +1,8 @@
 import { toast } from "react-toastify";
 
 export default function showToast({ message, type = "success" }) {
-  console.log(type)
   if (type == "warning") {
-    toast.info(message, {
+    toast.warn(message, {
       position: "top-right",
       autoClose: 5000,
       hideProgressBar: false,
