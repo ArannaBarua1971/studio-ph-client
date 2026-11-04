@@ -35,7 +35,7 @@ export default function StudioCard({ studioData }: { studioData: StudioTypes }) 
         {/* Media */}
         <div className="relative aspect-[4/3] w-full overflow-hidden">
           <img
-            src={studioData?.images?.images_0}
+            src={studioData?.images[0][1]}
             alt={ studioData.title}
             sizes="(min-width: 640px) 400px, 100vw"
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"

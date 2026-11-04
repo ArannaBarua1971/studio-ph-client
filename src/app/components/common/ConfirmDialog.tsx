@@ -19,13 +19,13 @@ import showToast from "@/lib/helper/toaster"
 import { useRouter } from "next/navigation"
 
 interface ConfirmDeleteDialogProps {
-    buttonName: string, icon: ReactNode, question: string, description: string, func: () => void, className: string,data:string,url:string,toastMessage:string
+    buttonName: string, icon: ReactNode, question: string, description: string, className: string,data:string,url:string,toastMessage:string,method:string,decisionBtnName:string
 }
-export default function ConfirmDeleteDialog({ buttonName, icon, question, description, func, className,data,url,toastMessage }: ConfirmDeleteDialogProps) {
+export default function ConfirmDialog({ buttonName, icon, question, description, className,data,url,toastMessage ,method="DELETE",decisionBtnName="Delete"}: ConfirmDeleteDialogProps) {
     const route=useRouter()
     const deleteStudio = async () => {
         const res = await fetch(`http://localhost:5000/${url}/${data}`, {
-            method: "DELETE"
+            method: method
         });
         if (res.ok) {
             showToast({ message: toastMessage })
@@ -50,7 +50,7 @@ export default function ConfirmDeleteDialog({ buttonName, icon, question, descri
                 <AlertDialogFooter>
                     <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
                     <AlertDialogCancel variant="destructive" onClick={deleteStudio} >
-                        Delete</AlertDialogCancel>
+                        {decisionBtnName}</AlertDialogCancel>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>

@@ -26,7 +26,7 @@ export default function Navbar() {
     const subLinks = [
         { href: "/add-studio", name: "Add Studio", icon: CirclePlus },
         { href: "/my-listings", name: "My Studio Listings", icon: LayoutList },
-        { href: "/mybookings", name: "My Bookings", icon: CalendarCheck },
+        { href: "/my-bookings", name: "My Bookings", icon: CalendarCheck },
     ];
 
     return (

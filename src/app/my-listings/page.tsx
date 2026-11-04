@@ -22,20 +22,19 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { useSession } from "@/lib/auth-client";
 import { StudioTypes } from "@/lib/types";
 import Loading from "../components/common/Loading";
-import ConfirmDeleteDialog from "../components/common/ConfirmDeleteDialog";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
+import ConfirmDialog from "../components/common/ConfirmDialog";
 
 
 
 export default async function StudioListings() {
-    const data = await auth.api.getSession({headers:await headers()})
+    const data = await auth.api.getSession({ headers: await headers() })
     const res = await fetch(`http://localhost:5000/mylistings/${data?.user.email}`);
     const d = await res.json();
-    const studios=d.data
+    const studios = d.data
 
 
 
@@ -138,7 +137,7 @@ export default async function StudioListings() {
                                         <div className="flex items-center gap-3">
 
                                             <img
-                                                src={studio.images.images_0}
+                                                src={studio.images[0][1]}
                                                 alt={studio.title}
                                                 className="h-10 w-12 rounded-lg object-cover"
                                             />
@@ -219,7 +218,7 @@ export default async function StudioListings() {
                                                 Update
                                             </Button>
 
-                                            <ConfirmDeleteDialog question="Delete studio space" description="
+                                            <ConfirmDialog question="Delete studio space" description="
                                             Are you sure you want to delete .
                                             This will permanently remove the document from the studios collection.
                                              This action cannot be undone.

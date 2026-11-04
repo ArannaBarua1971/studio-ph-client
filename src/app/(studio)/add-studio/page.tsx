@@ -44,7 +44,7 @@ export default function AddStudioPage() {
         const formData = new FormData(e.currentTarget);
         const d = Object.fromEntries(formData.entries())
 
-        const images = Object.fromEntries(Object.entries(d).filter(([key, value]) => key.startsWith("images_")))
+        const images = Object.entries(d).filter(([key, value]) => key.startsWith("images_"))
         const otherData = Object.fromEntries(Object.entries(d).filter(([key, value]) => !key.startsWith("images_")))
 
         const payload = { ...otherData, images, user_email: user,features:amenities };

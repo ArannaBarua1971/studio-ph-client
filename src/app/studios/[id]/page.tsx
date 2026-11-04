@@ -2,200 +2,317 @@
 import {
     ArrowLeft,
     MapPin,
-    Star,
     Users,
-    Maximize2,
     ShieldCheck,
+    Clock,
     Check,
+    Camera,
+    CalendarDays,
+} from "lucide-react";
 
-    ChevronLeft,
-    ChevronRight,
-    CalendarCheck,
-    Share2,
-    Heart,
-    Expand,
-    X
-} from 'lucide-react';
-import Link from 'next/link';
+import Link from "next/link";
 
-export default async function StudioDetailPage() {
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import {
+    Carousel,
+    CarouselContent,
+    CarouselItem,
+    CarouselNext,
+    CarouselPrevious,
+} from "@/components/ui/carousel";
+import { Separator } from "@/components/ui/separator";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import BookingStudio from "@/app/components/Studio/BookingStudioBtn";
 
 
+export default async function StudioDetailPage({
+    params,
+}: {
+    params: Promise<{ id: string }>;
+}) {
+    const { id } = await params;
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/studioDetails/${id}`,
+    );
+    const result = await res.json()
+    const studio = result.data
 
-    const studio = {
-        "id": "tracking-room-a",
-        "name": "Tracking Room A Live Recording Studio",
-        "category": "Music Studio",
-        "image": "/images/studios/tracking-room-a.jpg",
-        "imageAlt": "Live recording room with drum kit, amps and vocal booth",
-        "verified": true,
-        "rating": 4.91,
-        "reviewCount": 83,
-        "sqft": 1100,
-        "location": "Bushwick, Brooklyn, NY",
-        "maxGuests": 10,
-        "features": ["Ludwig Drum Kit", "API 1608 Console"],
-        "pricePerHour": 85,
-        "deposit": 120,
-        "href": "/studios/tracking-room-a"
-    }
+    const hourlyRate = Number(studio.hourtlyRate) || 0;
+    const deposit = Number(studio.deposit) || 0;
+    const cleaningFee = Number(studio.cleaningFee) || 0;
+    const images = studio.images.filter((img: string) => img[1] != "")
+    const formatPrice = (price: number) =>
+        `$${price.toLocaleString("en-US")}`;
 
+
+    const { user } = await auth.api.getSession({ headers: await headers() })
     return (
         <div className="min-h-screen bg-stone-50 py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-                {/* Navigation Breadcrumb & Actions */}
-                <div className="mb-6 flex items-center justify-between">
+                {/* Back Navigation */}
+                <div className="mb-7">
                     <Link
                         href="/studios"
-                        className="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-stone-600 hover:text-stone-950 transition-colors"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-stone-500 hover:text-stone-950 transition"
                     >
                         <ArrowLeft className="w-4 h-4" />
-                        <span>Back to Studios Directory</span>
+                        Back to Studios
                     </Link>
-
                 </div>
 
-                {/* Studio Header Details */}
-                <div className="mb-6">
-                    <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <span className="bg-stone-900 text-stone-100 text-xs font-semibold px-2.5 py-1 rounded-md">
-                            {studio.category}
-                        </span>
-                        <div className="flex items-center gap-1 bg-amber-50 text-amber-900 border border-amber-200 text-xs font-semibold px-2.5 py-1 rounded-md">
-                            <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                            <span>{studio.rating.toFixed(2)}</span>
-                        </div>
+                {/* Studio Header */}
+                <div className="mb-7 space-y-3">
 
+                    <div className="flex items-center gap-2 flex-wrap">
+                        <Badge className="bg-stone-900 hover:bg-stone-800">
+                            {studio.category}
+                        </Badge>
+
+                        {user.email == studio.user_email ?
+                            <Badge variant="outline" className="gap-1">
+                                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                                Studio Listing
+                            </Badge> : <></>
+                        }
                     </div>
 
-                    <h1 className="text-2xl sm:text-4xl font-display font-bold text-stone-900 tracking-tight">
-                        {studio.name}
+                    <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-stone-900">
+                        {studio.title}
                     </h1>
 
-                    <div className="mt-2 flex items-center gap-2 text-sm text-stone-600">
-                        <MapPin className="w-4 h-4 text-amber-600 shrink-0" />
+                    <div className="flex items-center gap-2 text-sm text-stone-500">
+                        <MapPin className="w-4 h-4 text-amber-600" />
                         <span>{studio.location}</span>
+                        <span>·</span>
+                        <span>{studio.address}</span>
+                    </div>
+
+                </div>
+
+                {/* Image Carousel */}
+                <div className="mb-10">
+                    <Carousel className="w-full">
+                        <CarouselContent className="-ml-3">
+                            {images?.map((image: string, index: number) => (
+                                image[1] ? <CarouselItem
+                                    key={index}
+                                    className="pl-3 basis-full sm:basis-1/2 lg:basis-1/3"
+                                >
+                                    <div className="relative h-[260px] sm:h-[320px] overflow-hidden rounded-2xl bg-stone-200">
+                                        <img
+                                            src={image[1]}
+                                            alt={`${studio.title} image ${index + 1}`}
+                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                            className="object-cover hover:scale-105 transition-transform duration-500"
+                                        />
+                                    </div>
+                                </CarouselItem> : <></>
+                            ))}
+                        </CarouselContent>
+
+                        {images?.length > 1 && (
+                            <>
+                                <CarouselPrevious className="left-4" />
+                                <CarouselNext className="right-4" />
+                            </>
+                        )}
+                    </Carousel>
+
+                    <div className="flex items-center gap-2 mt-3 text-xs text-stone-400">
+                        <Camera className="w-4 h-4" />
+                        {images?.length || 0} Photos
                     </div>
                 </div>
 
-                {/* Gallery Carousel with Lightbox Trigger */}
-                <div className="mb-10 space-y-3">
-
-                </div>
-
-                {/* 2-Column Split: Interactive Tabs Left, Contiguous Booking Module Right */}
+                {/* Main Content */}
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
-                    {/* LEFT 2 COLUMNS: Specifications & Interactive Tabbed View */}
-                    <div className="lg:col-span-2 space-y-8">
+                    {/* Left Content */}
+                    <div className="lg:col-span-2 space-y-7">
 
-                        {/* Quick Specs Bar */}
-                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 p-5 rounded-2xl bg-white border border-stone-200 shadow-sm">
-                            <div>
-                                <span className="block text-[11px] uppercase font-bold text-stone-400">
-                                    Capacity
-                                </span>
-                                <span className="text-sm font-bold text-stone-900 flex items-center gap-1.5 mt-0.5">
-                                    <Users className="w-4 h-4 text-stone-500" />
-                                    Up to {studio.maxGuests} people
-                                </span>
-                            </div>
+                        {/* Quick Specifications */}
+                        <Card className="rounded-2xl shadow-sm border-stone-200">
+                            <CardContent className="p-5 grid grid-cols-2 sm:grid-cols-3 gap-6">
 
-                            <div>
-                                <span className="block text-[11px] uppercase font-bold text-stone-400">
-                                    Space Size
-                                </span>
-                                <span className="text-sm font-bold text-stone-900 flex items-center gap-1.5 mt-0.5">
-                                    <Maximize2 className="w-4 h-4 text-stone-500" />
-                                    {studio.sqft} sq ft
-                                </span>
-                            </div>
+                                <div className="space-y-2">
+                                    <Users className="w-5 h-5 text-amber-600" />
+                                    <p className="text-xs text-stone-400 font-semibold uppercase">
+                                        Capacity
+                                    </p>
+                                    <p className="font-bold text-stone-900">
+                                        {studio.max_capacity} People
+                                    </p>
+                                </div>
 
-                            <div>
-                                <span className="block text-[11px] uppercase font-bold text-stone-400">
-                                    Security Deposit
-                                </span>
-                                <span className="text-sm font-bold text-stone-900 mt-0.5 block">
-                                    ${studio.deposit} (Refundable)
-                                </span>
-                            </div>
+                                <div className="space-y-2">
+                                    <Clock className="w-5 h-5 text-amber-600" />
+                                    <p className="text-xs text-stone-400 font-semibold uppercase">
+                                        Hourly Rate
+                                    </p>
+                                    <p className="font-bold text-stone-900">
+                                        {formatPrice(hourlyRate)}
+                                    </p>
+                                </div>
 
-                            <div>
-                                <span className="block text-[11px] uppercase font-bold text-stone-400">
-                                    Category
-                                </span>
-                                <span className="text-sm font-bold text-stone-900 mt-0.5 block">
-                                    {studio.category}
-                                </span>
-                            </div>
-                        </div>
+                                <div className="space-y-2">
+                                    <ShieldCheck className="w-5 h-5 text-amber-600" />
+                                    <p className="text-xs text-stone-400 font-semibold uppercase">
+                                        Deposit
+                                    </p>
+                                    <p className="font-bold text-stone-900">
+                                        {formatPrice(deposit)}
+                                    </p>
+                                </div>
 
+                            </CardContent>
+                        </Card>
+
+                        {/* Overview */}
+                        <section className="space-y-4">
+                            <h2 className="text-xl font-bold text-stone-900">
+                                About this studio
+                            </h2>
+
+                            <Card className="rounded-2xl border-stone-200 shadow-sm">
+                                <CardContent className="p-6">
+                                    <p className="text-sm leading-7 text-stone-600 whitespace-pre-line">
+                                        {studio.overview}
+                                    </p>
+                                </CardContent>
+                            </Card>
+                        </section>
+
+                        {/* Features */}
+                        {studio.features.length ?
+                            <section className="space-y-4">
+                                <h2 className="text-xl font-bold text-stone-900">
+                                    Studio Features
+                                </h2>
+                                <Card className="rounded-2xl border-stone-200 shadow-sm">
+                                    <CardContent className="p-6">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            {studio.features?.map((feature: string, index: number) => (
+                                                <div
+                                                    key={index}
+                                                    className="flex items-center gap-3 text-sm text-stone-700"
+                                                >
+                                                    <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+                                                        <Check className="w-4 h-4 text-emerald-600" />
+                                                    </div>
+                                                    <span className="font-medium">
+                                                        {feature}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </CardContent>
+                                </Card>
+                            </section>
+                            : <></>}
 
                     </div>
 
-                    {/* RIGHT COLUMN: Contiguous Sticky Purchase Module */}
-                    <div className="lg:col-span-1 sticky top-20 space-y-4">
-                        <div className="bg-white rounded-2xl border border-stone-200/90 p-6 shadow-xl space-y-5">
+                    {/* Right Booking Sidebar */}
+                    <div className="lg:sticky lg:top-20">
+                        <Card className="rounded-2xl border-stone-200 shadow-lg">
+                            <CardContent className="p-6 space-y-5">
 
-                            <div className="flex items-baseline justify-between border-b border-stone-100 pb-4">
-                                <div>
-                                    <span className="text-3xl font-bold font-display text-stone-900 tabular-nums">
-                                        ${studio.pricePerHour}
-                                    </span>
-                                    <span className="text-stone-500 text-sm"> / hour</span>
+                                {/* Price */}
+                                <div className="flex items-end justify-between">
+                                    <div>
+                                        <span className="text-3xl font-bold text-stone-900">
+                                            {formatPrice(hourlyRate)}
+                                        </span>
+                                        <span className="text-sm text-stone-500">
+                                            {" "}/ hour
+                                        </span>
+                                    </div>
+
+                                    <Badge variant="outline">
+                                        Hourly Booking
+                                    </Badge>
                                 </div>
-                                <div className="text-xs text-stone-400">
-                                    Min 2 hours
+
+                                <Separator />
+
+                                {/* Pricing Breakdown */}
+                                <div className="space-y-4">
+                                    <h3 className="font-bold text-stone-900">
+                                        Pricing Details
+                                    </h3>
+
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-stone-500">
+                                            Hourly Rate
+                                        </span>
+                                        <span className="font-semibold">
+                                            {formatPrice(hourlyRate)}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-stone-500">
+                                            Security Deposit
+                                        </span>
+                                        <span className="font-semibold">
+                                            {formatPrice(deposit)}
+                                        </span>
+                                    </div>
+
+                                    <div className="flex justify-between text-sm">
+                                        <span className="text-stone-500">
+                                            Cleaning Fee
+                                        </span>
+                                        <span className="font-semibold">
+                                            {formatPrice(cleaningFee)}
+                                        </span>
+                                    </div>
+
+                                    <Separator />
+
+                                    <div className="flex justify-between items-center">
+                                        <span className="font-bold text-stone-900">
+                                            Starting Total
+                                        </span>
+                                        <span className="text-xl font-bold text-amber-600">
+                                            {formatPrice(hourlyRate + deposit + cleaningFee)}
+                                        </span>
+                                    </div>
+
+                                    <p className="text-xs text-stone-400">
+                                        Based on one hour of booking. Deposit is included.
+                                    </p>
                                 </div>
-                            </div>
 
+                                {/* Booking Button */}
+                                <BookingStudio studioDetails={studio} userData={user}/>
 
-
-                            {/* Price Calculation Breakdown */}
-                            <div className="space-y-2 text-xs text-stone-600 bg-stone-50 p-4 rounded-xl border border-stone-100">
-                                <div className="flex justify-between">
-                                    <span>${studio.pricePerHour} × {"slotHours"} hours</span>
-                                    <span className="font-semibold text-stone-900">${"slotBasePrice"}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Security Deposit (Refundable)</span>
-                                    <span className="font-semibold text-stone-900">${"deposit"}</span>
-                                </div>
-                                <div className="flex justify-between">
-                                    <span>Cleaning & Sanitation Fee</span>
-                                    <span className="font-semibold text-stone-900">${"cleaningFee"}</span>
-                                </div>
-                                <div className="pt-2 border-t border-stone-200 flex justify-between items-baseline text-sm font-bold text-stone-900">
-                                    <span>Estimated Total</span>
-                                    <span className="text-base text-amber-600 font-display tabular-nums">${"estimatedTotal"}</span>
-                                </div>
-                            </div>
-
-
-
-                            <div className="text-center">
-                                <span className="text-[11px] text-stone-400">
-                                    Status will be submitted as "Pending" in MongoDB bookings
-                                </span>
-                            </div>
-
-                            <div className="p-3 bg-stone-50 rounded-xl border border-stone-100 text-xs space-y-1 text-stone-500">
-                                <div className="flex items-center gap-1.5 font-semibold text-stone-800">
-                                    <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                                    <span>Host Guarantee Protected</span>
-                                </div>
-                                <p className="text-[11px] leading-relaxed">
-                                    Includes $1,000,000 host liability coverage and free cancellation up to 48 hours before shoot date.
+                                <p className="text-center text-xs text-stone-400">
+                                    Booking will be subject to host approval.
                                 </p>
-                            </div>
 
-                        </div>
+                                {/* Guarantee */}
+                                <div className="p-4 bg-emerald-50 rounded-xl space-y-2">
+                                    <div className="flex items-center gap-2 text-sm font-bold text-emerald-800">
+                                        <ShieldCheck className="w-4 h-4" />
+                                        Secure Booking
+                                    </div>
+
+                                    <p className="text-xs leading-relaxed text-emerald-700">
+                                        Your booking request will be securely submitted for confirmation.
+                                    </p>
+                                </div>
+
+                            </CardContent>
+                        </Card>
                     </div>
 
                 </div>
-
             </div>
         </div>
     );
-};
+}

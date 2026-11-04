@@ -105,42 +105,7 @@ export default function HeroBanner() {
       />
 
       <div className=" px-6 py-14 lg:py-16">
-        {/* Top bar */}
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <Badge
-            variant="outline"
-            className="gap-2 rounded-full border-white/15 bg-black/40 px-4 py-2 text-xs font-medium text-amber-400 backdrop-blur-md"
-          >
-            <Sparkles className="size-3.5" />
-            Production Space Network &amp; Reservations
-          </Badge>
 
-          <div
-            role="radiogroup"
-            aria-label="Lighting mood"
-            className="flex items-center gap-1 rounded-xl border border-white/10 bg-black/40 p-1 backdrop-blur-md"
-          >
-            <span className="px-3 text-xs text-white/60">Lighting Mood:</span>
-            {MOODS.map(({ id, label, icon: Icon }) => (
-              <button
-                key={id}
-                type="button"
-                role="radio"
-                aria-checked={mood === id}
-                onClick={() => setMood(id)}
-                className={cn(
-                  "flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60",
-                  mood === id
-                    ? "bg-amber-400 text-neutral-950"
-                    : "text-white/70 hover:text-white"
-                )}
-              >
-                <Icon className="size-3.5" />
-                {label}
-              </button>
-            ))}
-          </div>
-        </div>
 
         <div className="mt-10 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-14">
           {/* Left column */}
@@ -161,72 +126,17 @@ export default function HeroBanner() {
               windows
             </p>
 
-            {/* Search bar */}
-            <form
-              onSubmit={onSearch}
-              className="mt-10 flex flex-col gap-3 rounded-2xl border border-white/10 bg-black/50 p-3 backdrop-blur-xl sm:flex-row sm:items-stretch"
+
+
+            <Link
+              href={"/studios"}
+              className="flex w-[10%] justify-center items-center mt-2 rounded-xl bg-amber-400 px-8 py-4 text-sm font-semibold text-neutral-950 hover:bg-amber-300"
             >
-              <Field icon={<Search className="size-4" />} label="Category" className="sm:flex-[1.3]">
-                <Select value={category} onValueChange={setCategory}>
-                  <SelectTrigger className="h-auto w-full border-0 bg-transparent p-0 text-sm font-semibold text-white shadow-none focus:ring-0 focus-visible:ring-0 [&_svg]:text-white/70">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CATEGORIES.map((c) => (
-                      <SelectItem key={c.value} value={c.value}>
-                        {c.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </Field>
-
-              <Field icon={<MapPin className="size-4" />} label="Location" className="sm:flex-[1.3]">
-                <Input
-                  value={location}
-                  onChange={(e) => setLocation(e.target.value)}
-                  placeholder="Brooklyn, LA, Austin…"
-                  className="h-auto border-0 bg-transparent p-0 text-sm text-white shadow-none placeholder:text-white/35 focus-visible:ring-0"
-                />
-              </Field>
-
-              <Field icon={<DollarSign className="size-4" />} label="Max $/hr" className="sm:flex-1">
-                <Input
-                  type="number"
-                  inputMode="numeric"
-                  min={0}
-                  value={budget}
-                  onChange={(e) => setBudget(e.target.value)}
-                  placeholder="Budget"
-                  className="h-auto border-0 bg-transparent p-0 text-sm text-white shadow-none placeholder:text-white/35 focus-visible:ring-0"
-                />
-              </Field>
-
-              <Button
-                type="submit"
-                className="h-auto rounded-xl bg-amber-400 px-8 py-4 text-sm font-semibold text-neutral-950 hover:bg-amber-300"
-              >
-                Search
-                <ArrowRight className="size-4" />
-              </Button>
-            </form>
-
-            {/* Trending */}
-            <div className="mt-4 flex flex-wrap items-center gap-2 text-xs">
-              <span className="mr-1 text-white/45">Trending:</span>
-              {TRENDING.map((t) => (
-                <Link
-                  key={t}
-                  href={`/explore?q=${encodeURIComponent(t)}`}
-                  className="rounded-md border border-white/10 bg-black/30 px-3 py-1.5 text-white/65 transition-colors hover:border-amber-400/50 hover:text-amber-300"
-                >
-                  {t}
-                </Link>
-              ))}
-            </div>
+              Explore
+              <ArrowRight className="size-4" />
+            </Link>
           </div>
 
-          {/* Right column */}
         </div>
       </div>
     </section>
