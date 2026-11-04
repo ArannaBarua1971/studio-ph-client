@@ -16,6 +16,7 @@ import Loading from "../../components/common/Loading";
 import { useSession } from "@/lib/auth-client";
 import showToast from "@/lib/helper/toaster";
 import { PRESET_IMAGES,CATEGORIES,AMENITY_OPTIONS } from "@/lib/adminData/studio";
+import { redirect } from "next/navigation";
 
 
 
@@ -60,6 +61,7 @@ export default function AddStudioPage() {
         if (res.ok) {
             setIsSubmitting(false)
             showToast({ message: "Studio is created" })
+            redirect("/my-listings")
         }
     }
     return (
