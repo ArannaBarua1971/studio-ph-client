@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import Loading from "../common/Loading";
+import getTokenForClient from "@/lib/helper/getTokenForClient";
 
 function BookingStudioBtn({ studioDetails, userData }: { studioDetails: StudioTypes, userData: { email: string } }) {
 
@@ -48,14 +49,18 @@ function BookingStudioBtn({ studioDetails, userData }: { studioDetails: StudioTy
             user_email: userData.email,
             studio_id: _id,
             Booked: true,
-            status:"pending"
+            status: "pending"
         }
+        const token = await getTokenForClient()
+
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/bookingStudio`,
             {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
+                    ,
+                    Authorization: `Bearer ${token}`
                 },
                 body: JSON.stringify(payload)
             })
@@ -70,7 +75,7 @@ function BookingStudioBtn({ studioDetails, userData }: { studioDetails: StudioTy
 
         <Button disabled={isBooked} className="w-full h-12 bg-amber-400 hover:bg-amber-300 text-black" onClick={handleSubmit}>
 
-            {isLoading ? <Loading /> : !isBooked? <><CalendarDays className="w-4 h-4 mr-2" />Book This Studio</>:<>Already Booked</>}
+            {isLoading ? <Loading /> : !isBooked ? <><CalendarDays className="w-4 h-4 mr-2" />Book This Studio</> : <>Booked</>}
         </Button>
 
     )

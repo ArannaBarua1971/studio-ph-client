@@ -19,13 +19,17 @@ import showToast from "@/lib/helper/toaster"
 import { useRouter } from "next/navigation"
 
 interface ConfirmDeleteDialogProps {
-    buttonName: string, icon: ReactNode, question: string, description: string, className: string,data:string,url:string,toastMessage:string,method:string,decisionBtnName:string
+    buttonName: string, icon: ReactNode, question: string, description: string, className: string, data: string, url: string, toastMessage: string, method: string, decisionBtnName: string,token:string
 }
-export default function ConfirmDialog({ buttonName, icon, question, description, className,data,url,toastMessage ,method="DELETE",decisionBtnName="Delete"}: ConfirmDeleteDialogProps) {
-    const route=useRouter()
+export default function ConfirmDialog({ buttonName, icon, question, description, className, data, url, toastMessage, method = "DELETE", decisionBtnName = "Delete",token }: ConfirmDeleteDialogProps) {
+    const route = useRouter()
     const deleteStudio = async () => {
         const res = await fetch(`http://localhost:5000/${url}/${data}`, {
-            method: method
+            method: method,
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+
         });
         if (res.ok) {
             showToast({ message: toastMessage })

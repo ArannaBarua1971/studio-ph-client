@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
     Plus,
     Eye,
-    Pencil,
     Trash2,
 } from "lucide-react";
 
@@ -28,12 +27,18 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import ConfirmDialog from "../components/common/ConfirmDialog";
 import { UpdateStudio } from "../components/Studio/UpdateStudio";
+import getTokenForServer from "@/lib/helper/getTokenForServer";
 
 
 
 export default async function StudioListings() {
+    const token = await getTokenForServer()
     const data = await auth.api.getSession({ headers: await headers() })
-    const res = await fetch(`http://localhost:5000/mylistings/${data?.user.email}`);
+    const res = await fetch(`http://localhost:5000/mylistings/${data?.user.email}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
     const d = await res.json();
     const studios = d.data
 
@@ -202,14 +207,14 @@ export default async function StudioListings() {
                                         <div className="flex items-center justify-end gap-1.5">
 
                                             <Link href={`/studios/${studio._id}`}>
-                                            <Button
-                                                variant="ghost"
-                                                size="icon"
-                                                className="h-8 w-8 text-gray-500"
-                                                aria-label="View studio"
-                                            >
-                                                <Eye size={15} />
-                                            </Button>
+                                                <Button
+                                                    variant="ghost"
+                                                    size="icon"
+                                                    className="h-8 w-8 text-gray-500"
+                                                    aria-label="View studio"
+                                                >
+                                                    <Eye size={15} />
+                                                </Button>
                                             </Link>
 
 
@@ -226,6 +231,7 @@ export default async function StudioListings() {
                                                 url="mylistings"
                                                 buttonName="Delete"
                                                 toastMessage="studio space deleted successfully"
+                                                token={token}
                                             />
 
 

@@ -7,12 +7,10 @@ import {
     Clock,
     Check,
     Camera,
-    CalendarDays,
 } from "lucide-react";
 
 import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -26,6 +24,7 @@ import { Separator } from "@/components/ui/separator";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import BookingStudio from "@/app/components/Studio/BookingStudioBtn";
+import getTokenForServer from "@/lib/helper/getTokenForServer";
 
 
 export default async function StudioDetailPage({
@@ -35,7 +34,7 @@ export default async function StudioDetailPage({
 }) {
     const { id } = await params;
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/studioDetails/${id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/studioDetails/${id}`
     );
     const result = await res.json()
     const studio = result.data
@@ -95,7 +94,7 @@ export default async function StudioDetailPage({
 
                 {/* Image Carousel */}
                 <div className="mb-10">
-                    <Carousel className="w-full"  opts={{align:"start",loop:true}}>
+                    <Carousel className="w-full" opts={{ align: "start", loop: true }}>
                         <CarouselContent className="-ml-3">
                             {images?.map((image: string, index: number) => (
                                 image[1] ? <CarouselItem
@@ -288,7 +287,7 @@ export default async function StudioDetailPage({
                                 </div>
 
                                 {/* Booking Button */}
-                                <BookingStudio studioDetails={studio} userData={user}/>
+                                <BookingStudio studioDetails={studio} userData={user} />
 
                                 <p className="text-center text-xs text-stone-400">
                                     Booking will be subject to host approval.

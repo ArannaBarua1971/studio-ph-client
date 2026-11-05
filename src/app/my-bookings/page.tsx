@@ -4,9 +4,7 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 
-import {
-    Card,
-} from "@/components/ui/card";
+
 
 
 import Loading from "../components/common/Loading";
@@ -15,12 +13,18 @@ import { headers } from "next/headers";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import BookingCard from "../components/Studio/BookingCard";
 import { BookingStudioTypes } from "@/lib/types";
+import getTokenForServer from "@/lib/helper/getTokenForServer";
 
 
 
 export default async function StudioListings() {
+    const token = await getTokenForServer()
     const data = await auth.api.getSession({ headers: await headers() })
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookingStudio/${data?.user.email}`);
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bookingStudio/${data?.user.email}`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    });
     const d = await res.json();
     const studios = d.data
 
@@ -38,7 +42,7 @@ export default async function StudioListings() {
 
                 <div>
                     <p className="mb-2 text-xs font-semibold tracking-wider text-orange-600">
-                       Creator Reservations
+                        Creator Reservations
                     </p>
 
                     <h1 className="text-2xl font-bold tracking-tight text-gray-900 md:text-3xl">
@@ -71,15 +75,15 @@ export default async function StudioListings() {
             {/* Table View */}
 
 
-                <div className="overflow-x-auto space-y-3">
+            <div className="overflow-x-auto space-y-3">
 
-                  {
-                    studios.map((studio:BookingStudioTypes)=>(
-                        <BookingCard key={studio._id} data={studio}/>
+                {
+                    studios.map((studio: BookingStudioTypes) => (
+                        <BookingCard key={studio._id} data={studio} />
                     ))
-                  }
+                }
 
-                </div>
+            </div>
 
 
         </div>

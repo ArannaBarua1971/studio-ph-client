@@ -33,6 +33,7 @@ import { useState } from "react";
 import { StudioTypes } from "@/lib/types";
 import showToast from "@/lib/helper/toaster";
 import { redirect } from "next/navigation";
+import getTokenForClient from "@/lib/helper/getTokenForClient";
 
 const labelClass =
     "block text-xs font-bold uppercase tracking-wider text-stone-700 mb-1.5";
@@ -55,7 +56,7 @@ export function UpdateStudio({ studioData }: { studioData: StudioTypes }) {
                 : [...prev, item]
         );
 
-    const handleSubmit =async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         const formData = new FormData(e.currentTarget);
@@ -63,12 +64,13 @@ export function UpdateStudio({ studioData }: { studioData: StudioTypes }) {
 
         const images = Object.entries(data).filter(([key, value]) => key.startsWith("images_"))
         const otherData = Object.fromEntries(Object.entries(data).filter(([key, value]) => !key.startsWith("images_")))
-
-        const payload = {...studioData, ...otherData, images, features: amenities };
+        const token = await getTokenForClient()
+        const payload = { ...studioData, ...otherData, images, features: amenities };
         const res = await fetch(`http://localhost:5000/studios`, {
             method: "PATCH",
             headers: {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
             },
             body: JSON.stringify(payload)
         });
@@ -77,8 +79,8 @@ export function UpdateStudio({ studioData }: { studioData: StudioTypes }) {
             setIsSubmitting(false)
             showToast({ message: "Studio is Updated" })
             redirect("/my-listings")
-        }else{
-            showToast({ message: "Studio is updated successfully",type:"warning" })
+        } else {
+            showToast({ message: "Studio is updated successfully", type: "warning" })
         }
     };
 
@@ -275,7 +277,7 @@ export function UpdateStudio({ studioData }: { studioData: StudioTypes }) {
                                 <input
                                     key={p.label}
                                     type="url"
-                                    name={`images_${i+1}`}
+                                    name={`images_${i + 1}`}
                                     defaultValue={studioData?.images[i + 1][1]}
                                     placeholder={`https://... or select preset below ${preset.label}`}
                                     className={`${inputClass} ${preset.label === p.label ? "block" : "hidden"}`}

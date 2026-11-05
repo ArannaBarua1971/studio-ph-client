@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -9,12 +8,13 @@ import {
     CalendarDays,
     Users,
 } from "lucide-react";
-import ConfirmDeleteDialog from "../common/ConfirmDialog";
 import { BookingStudioTypes } from "@/lib/types";
 import ConfirmDialog from "../common/ConfirmDialog";
+import getTokenForServer from "@/lib/helper/getTokenForServer";
 
-export default function BookingCard({ data }: { data: BookingStudioTypes }) {
+export default async function BookingCard({ data }: { data: BookingStudioTypes }) {
     const total = Number(data.hourtlyRate) + Number(data.deposit) + Number(data.cleaningFee);
+    const token=await getTokenForServer()
     return (
         <Card className="w-full rounded-2xl border border-stone-200 shadow-sm">
             <CardContent className="p-5 sm:p-6">
@@ -126,6 +126,7 @@ export default function BookingCard({ data }: { data: BookingStudioTypes }) {
                                 toastMessage="studio space deleted successfully"
                                 method="PATCH"
                                 decisionBtnName="Cancel"
+                                token={token}
                             />
                         </div>}
 

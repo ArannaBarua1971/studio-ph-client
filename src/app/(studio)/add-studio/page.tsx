@@ -16,7 +16,8 @@ import Loading from "../../components/common/Loading";
 import { useSession } from "@/lib/auth-client";
 import showToast from "@/lib/helper/toaster";
 import { PRESET_IMAGES, CATEGORIES, AMENITY_OPTIONS } from "@/lib/adminData/studio";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import getTokenForClient from "@/lib/helper/getTokenForClient";
 
 
 
@@ -26,6 +27,7 @@ const inputClass =
     "w-full px-4 py-2.5 text-sm rounded-xl border border-stone-300 focus:outline-none focus:ring-2 focus:ring-amber-500 bg-white";
 
 export default function AddStudioPage() {
+    const router=useRouter()
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [amenities, setAmenities] = useState<string[]>([]);
     const [preset, setPreset] = useState(PRESET_IMAGES[1])
@@ -40,27 +42,37 @@ export default function AddStudioPage() {
         );
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsSubmitting(true)
-        const user = data.user.email
-        const formData = new FormData(e.currentTarget);
-        const d = Object.fromEntries(formData.entries())
+        setIsSubmitting(true);
+        try {
+            const user = data.user.email
+            const formData = new FormData(e.currentTarget);
+            const d = Object.fromEntries(formData.entries())
+            
+            const images = Object.entries(d).filter(([key, value]) => key.startsWith("images_"))
+            const otherData = Object.fromEntries(Object.entries(d).filter(([key, value]) => !key.startsWith("images_")))
+            const token =await getTokenForClient()
 
-        const images = Object.entries(d).filter(([key, value]) => key.startsWith("images_"))
-        const otherData = Object.fromEntries(Object.entries(d).filter(([key, value]) => !key.startsWith("images_")))
+            const payload = { ...otherData, images, user_email: user, features: amenities };
+            const res = await fetch(`http://localhost:5000/studios`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization:`Bearer ${token}`
+                },
+                body: JSON.stringify(payload)
+            });
 
-        const payload = { ...otherData, images, user_email: user, features: amenities };
-        const res = await fetch(`http://localhost:5000/studios`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(payload)
-        });
-
-        if (res.ok) {
+            if (res.ok) {
+                setIsSubmitting(false)
+                showToast({ message: "Studio is created" })
+                router.push("/my-listings")
+            }else{
+                showToast({ message: "unauthorized",type:"warning" })
+                router.push("/login")
+            }
+        } catch (error) {
+            console.log(error)
             setIsSubmitting(false)
-            showToast({ message: "Studio is created" })
-            redirect("/my-listings")
         }
     }
     return (
@@ -249,7 +261,7 @@ export default function AddStudioPage() {
                                     <input
                                         key={p.label}
                                         type="url"
-                                        name={`images_${i+1}`}
+                                        name={`images_${i + 1}`}
                                         placeholder={`https://... or select preset below ${preset.label}`}
                                         className={`${inputClass} ${preset.label === p.label ? "block" : "hidden"}`}
                                     />
