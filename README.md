@@ -10,3 +10,5 @@ five bullet points to feature your website:
 tech stack;
 frontend: Next.js,tailwind.css,react-tastify,shadcn
 backend: Mongodb,Express,dotenv
+
+live site :https://studio-space-mu.vercel.app/
