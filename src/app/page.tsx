@@ -9,7 +9,6 @@ export default async function Home() {
   const studioData = await studioRes.json();
   const categoryRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/category`);
   const cateRoryData = await categoryRes.json();
-  console.log(cateRoryData)
   return (
     <div>
       <HomeBanner />
