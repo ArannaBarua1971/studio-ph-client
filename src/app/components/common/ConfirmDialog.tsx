@@ -18,10 +18,20 @@ import { ReactNode } from "react"
 import showToast from "@/lib/helper/toaster"
 import { useRouter } from "next/navigation"
 
-interface ConfirmDeleteDialogProps {
-    buttonName: string, icon: ReactNode, question: string, description: string, className: string, data: string, url: string, toastMessage: string, method: string, decisionBtnName: string,token:string
+interface ConfirmDialogProps {
+  question: string;
+  description: string;
+  className?: string;
+  icon: ReactNode;
+  data: string | undefined;
+  url: string;
+  buttonName: string;
+  toastMessage: string;
+  token: string;
+  method?:string,
+  decisionBtnName?:string,
 }
-export default function ConfirmDialog({ buttonName, icon, question, description, className, data, url, toastMessage, method = "DELETE", decisionBtnName = "Delete",token }: ConfirmDeleteDialogProps) {
+export default function ConfirmDialog({ buttonName, icon, question, description, className, data, url, toastMessage, method = "DELETE", decisionBtnName = "Delete",token }: ConfirmDialogProps) {
     const route = useRouter()
     const deleteStudio = async () => {
         const res = await fetch(`http://localhost:5000/${url}/${data}`, {

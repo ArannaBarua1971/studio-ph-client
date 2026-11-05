@@ -47,7 +47,7 @@ export default async function StudioDetailPage({
         `$${price.toLocaleString("en-US")}`;
 
 
-    const { user } = await auth.api.getSession({ headers: await headers() })
+    const session = await auth.api.getSession({ headers: await headers() })
     return (
         <div className="min-h-screen bg-stone-50 py-8">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,7 +71,7 @@ export default async function StudioDetailPage({
                             {studio.category}
                         </Badge>
 
-                        {user.email == studio.user_email ?
+                        {session?.user.email == studio.user_email ?
                             <Badge variant="outline" className="gap-1">
                                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
                                 Studio Listing
@@ -287,7 +287,10 @@ export default async function StudioDetailPage({
                                 </div>
 
                                 {/* Booking Button */}
-                                <BookingStudio studioDetails={studio} userData={user} />
+                                {
+                                    session?.user ?
+                                        <BookingStudio studioDetails={studio} userData={session?.user} /> : <></>
+                                }
 
                                 <p className="text-center text-xs text-stone-400">
                                     Booking will be subject to host approval.

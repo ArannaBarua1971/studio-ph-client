@@ -9,7 +9,7 @@ interface StudioTypes {
   max_capacity: string;
   overview: string;
   title: string;
-  images:object,
+  images:[string, string][],
   user_id:string,
   features:string[]
 }
