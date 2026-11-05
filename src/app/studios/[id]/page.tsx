@@ -95,7 +95,7 @@ export default async function StudioDetailPage({
 
                 {/* Image Carousel */}
                 <div className="mb-10">
-                    <Carousel className="w-full">
+                    <Carousel className="w-full"  opts={{align:"start",loop:true}}>
                         <CarouselContent className="-ml-3">
                             {images?.map((image: string, index: number) => (
                                 image[1] ? <CarouselItem
@@ -106,7 +106,6 @@ export default async function StudioDetailPage({
                                         <img
                                             src={image[1]}
                                             alt={`${studio.title} image ${index + 1}`}
-                                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                             className="object-cover hover:scale-105 transition-transform duration-500"
                                         />
                                     </div>

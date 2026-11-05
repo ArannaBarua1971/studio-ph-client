@@ -15,7 +15,7 @@ import {
 import Loading from "../../components/common/Loading";
 import { useSession } from "@/lib/auth-client";
 import showToast from "@/lib/helper/toaster";
-import { PRESET_IMAGES,CATEGORIES,AMENITY_OPTIONS } from "@/lib/adminData/studio";
+import { PRESET_IMAGES, CATEGORIES, AMENITY_OPTIONS } from "@/lib/adminData/studio";
 import { redirect } from "next/navigation";
 
 
@@ -28,16 +28,16 @@ const inputClass =
 export default function AddStudioPage() {
     const [isSubmitting, setIsSubmitting] = useState(false)
     const [amenities, setAmenities] = useState<string[]>([]);
-    const [preset, setPreset] = useState(PRESET_IMAGES[0])
+    const [preset, setPreset] = useState(PRESET_IMAGES[1])
     const { data } = useSession()
     if (!data?.session) {
         return <Loading />
     }
 
     const toggleAmenity = (item: string) =>
-    setAmenities((prev) =>
-      prev.includes(item) ? prev.filter((a) => a !== item) : [...prev, item]
-    );
+        setAmenities((prev) =>
+            prev.includes(item) ? prev.filter((a) => a !== item) : [...prev, item]
+        );
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true)
@@ -48,8 +48,7 @@ export default function AddStudioPage() {
         const images = Object.entries(d).filter(([key, value]) => key.startsWith("images_"))
         const otherData = Object.fromEntries(Object.entries(d).filter(([key, value]) => !key.startsWith("images_")))
 
-        const payload = { ...otherData, images, user_email: user,features:amenities };
-        console.log(payload)
+        const payload = { ...otherData, images, user_email: user, features: amenities };
         const res = await fetch(`http://localhost:5000/studios`, {
             method: "POST",
             headers: {
@@ -213,43 +212,68 @@ export default function AddStudioPage() {
 
                         {/* Image URL */}
                         {/* Image URL & Preset Selection */}
-                        <div>
-                            <div className="flex items-center justify-between mb-1.5">
-                                <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
-                                    <ImageIcon className="w-3.5 h-3.5 inline mr-1 text-stone-400" />
-                                    Studio Image URL *
-                                </label>
-                                <span className="text-[11px] text-stone-400">
-                                    Select preset or enter custom URL
-                                </span>
-                            </div>
+                        <div className="space-y-2">
+                            <div className="baseImg">
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1.5">
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
+                                        <ImageIcon className="w-3.5 h-3.5 inline mr-1 text-stone-400" />
+                                        Studio Image URL *(Base)
+                                    </label>
 
-                            {PRESET_IMAGES.map((p, i) => {
-                                return <input
-                                    key={p.label}
-                                    required={p.label == "Daylight Cyc Loft"}
+                                    <span className="text-[11px] text-stone-400">
+                                        Select preset or enter custom URL
+                                    </span>
+                                </div>
+
+                                <input
                                     type="url"
-                                    name={`images_${i}`}
+                                    name={`images_0`}
                                     placeholder={`https://... or select preset below ${preset.label}`}
-                                    className={`${inputClass} ${preset.label === p.label ? "block" : "hidden"}`}
+                                    required
+                                    className={`${inputClass}`}
                                 />
-                            })}
-                            {/* Preset Chips */}
-                            <div className="mt-2.5 flex items-center gap-2 overflow-x-auto pb-1">
-                                <span className="text-[11px] text-stone-400 shrink-0">Presets:</span>
-                                {PRESET_IMAGES.map((p) => (
-                                    <button
-                                        key={p.url}
-                                        type="button"
-                                        onClick={() => setPreset(p)}
-                                        className={`px-2.5 py-1 text-xs rounded-lg border transition-colors shrink-0 ${preset.url === p.url
-                                            ? "bg-amber-100 border-amber-400 text-amber-900 font-semibold"
-                                            : "bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100"
-                                            }`}
-                                    >
-                                        {p.label}
-                                    </button>
+                            </div>
+                            <div className="extraImg">
+
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1.5">
+                                    <label className="block text-xs font-bold uppercase tracking-wider text-stone-700">
+                                        <ImageIcon className="w-3.5 h-3.5 inline mr-1 text-stone-400" />
+                                        Studio Image URL (Extra)
+                                    </label>
+
+                                    <span className="text-[11px] text-stone-400">
+                                        Select preset or enter custom URL
+                                    </span>
+                                </div>
+                                {PRESET_IMAGES.slice(1, 6).map((p, i) => (
+                                    <input
+                                        key={p.label}
+                                        type="url"
+                                        name={`images_${i+1}`}
+                                        placeholder={`https://... or select preset below ${preset.label}`}
+                                        className={`${inputClass} ${preset.label === p.label ? "block" : "hidden"}`}
+                                    />
                                 ))}
+
+                                <div className="mt-2.5 flex items-center gap-2 overflow-x-auto pb-1">
+                                    <span className="text-[11px] text-stone-400 shrink-0">
+                                        Presets:
+                                    </span>
+
+                                    {PRESET_IMAGES.slice(1, 6).map((p) => (
+                                        <button
+                                            key={p.url}
+                                            type="button"
+                                            onClick={() => setPreset(p)}
+                                            className={`px-2.5 py-1 text-xs rounded-lg border transition-colors shrink-0 ${preset.url === p.url
+                                                ? "bg-amber-100 border-amber-400 text-amber-900 font-semibold"
+                                                : "bg-stone-50 border-stone-200 text-stone-600 hover:bg-stone-100"
+                                                }`}
+                                        >
+                                            {p.label}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
                         </div>
 
@@ -266,8 +290,8 @@ export default function AddStudioPage() {
                                             onClick={() => toggleAmenity(item)}
                                             className={`flex items-center gap-2.5 p-2.5 text-xs rounded-xl border text-left
                                                  transition-colors ${checked
-                                                ? "border-amber-500 bg-amber-50/70 text-amber-950 font-medium"
-                                                : "border-stone-200 text-stone-600 hover:bg-stone-50"
+                                                    ? "border-amber-500 bg-amber-50/70 text-amber-950 font-medium"
+                                                    : "border-stone-200 text-stone-600 hover:bg-stone-50"
                                                 }`}
                                         >
                                             <div

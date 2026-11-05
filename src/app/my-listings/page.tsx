@@ -27,6 +27,7 @@ import Loading from "../components/common/Loading";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import ConfirmDialog from "../components/common/ConfirmDialog";
+import { UpdateStudio } from "../components/Studio/UpdateStudio";
 
 
 
@@ -200,6 +201,7 @@ export default async function StudioListings() {
                                     <TableCell>
                                         <div className="flex items-center justify-end gap-1.5">
 
+                                            <Link href={`/studios/${studio._id}`}>
                                             <Button
                                                 variant="ghost"
                                                 size="icon"
@@ -208,15 +210,10 @@ export default async function StudioListings() {
                                             >
                                                 <Eye size={15} />
                                             </Button>
+                                            </Link>
 
-                                            <Button
-                                                variant="outline"
-                                                size="sm"
-                                                className="h-7 border-amber-300 px-2 text-xs text-amber-700 hover:bg-amber-50"
-                                            >
-                                                <Pencil size={13} />
-                                                Update
-                                            </Button>
+
+                                            <UpdateStudio studioData={studio} />
 
                                             <ConfirmDialog question="Delete studio space" description="
                                             Are you sure you want to delete .
