@@ -6,7 +6,7 @@ export default function HostGuarantee() {
   return (
     <>
       {/* Banner */}
-      <section className="border-b border-white/10 bg-[#1c1917] px-6 py-16 mt-10">
+      <section className="border-b border-white/10 bg-[#1c1917] px-4 py-14 mt-10 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="max-w-2xl">
             <p className="text-xs font-semibold uppercase tracking-wide text-amber-400">
@@ -22,7 +22,7 @@ export default function HostGuarantee() {
             </p>
           </div>
 
-          <div className="flex shrink-0 items-center gap-4">
+          <div className="flex flex-wrap shrink-0 items-center gap-3 sm:gap-4">
             <Button
               variant="outline"
               className="h-11 rounded-xl border-white/25 bg-transparent px-5 text-xs font-semibold text-neutral-200 hover:bg-white/5 hover:text-white"

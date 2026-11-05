@@ -58,10 +58,10 @@ function Footer() {
     return (
         <div >
             {/* Features */}
-            <section className="border-b border-white/10 bg-[#141110] px-6 py-16">
+            <section className="border-b border-white/10 bg-[#141110] px-4 py-14 sm:px-6 sm:py-16">
                 <div className="mx-auto max-w-6xl">
                     <div className="text-center">
-                        <h2 className="text-2xl font-bold tracking-tight text-white">
+                        <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
                             Host Guarantee &amp; Creator Support
                         </h2>
                         <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-neutral-400">

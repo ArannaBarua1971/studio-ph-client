@@ -49,7 +49,7 @@ export default async function StudioListings() {
     }
 
     return (
-        <div className="min-h-screen bg-[#fafafa] p-5 md:p-8">
+        <div className="min-h-screen bg-[#fafafa] p-4 sm:p-5 md:p-8">
 
             {/* Header */}
             <div className="mb-8 flex flex-col justify-between gap-5 md:flex-row md:items-center">
@@ -92,8 +92,7 @@ export default async function StudioListings() {
 
                 <div className="overflow-x-auto">
 
-                    <Table>
-
+                    <Table className="min-w-[880px]">
                         <TableHeader>
                             <TableRow className="h-11 hover:bg-transparent">
 

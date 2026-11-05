@@ -83,11 +83,11 @@ export default async function StudioDetailPage({
                         {studio.title}
                     </h1>
 
-                    <div className="flex items-center gap-2 text-sm text-stone-500">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-stone-500">
                         <MapPin className="w-4 h-4 text-amber-600" />
                         <span>{studio.location}</span>
-                        <span>·</span>
-                        <span>{studio.address}</span>
+                        <span className="hidden sm:inline">·</span>
+                        <span className="break-words">{studio.address}</span>
                     </div>
 
                 </div>

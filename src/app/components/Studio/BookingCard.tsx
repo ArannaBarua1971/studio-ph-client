@@ -21,16 +21,16 @@ export default async function BookingCard({ data }: { data: BookingStudioTypes }
 
                 <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
 
-                    <div className="flex gap-4">
+                    <div className="flex gap-3 sm:gap-4 min-w-0">
                         <div className="relative w-20 h-20 shrink-0 overflow-hidden rounded-xl">
                             <img
                                 src={data.images[0][1]}
                                 alt="Studio"
-                                className="object-cover"
+                                className="h-full w-full object-cover"
                             />
                         </div>
 
-                        <div className="space-y-1">
+                        <div className="min-w-0 space-y-1">
                             <div className="flex flex-wrap items-center gap-2">
                                 <Badge className="bg-orange-50 text-orange-600 hover:bg-orange-50 border-0 rounded-md">
                                     {data.category}
@@ -45,8 +45,8 @@ export default async function BookingCard({ data }: { data: BookingStudioTypes }
                             </h3>
 
                             <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                                <MapPin className="w-4 h-4" />
-                                {data.address},{data.location}
+                                <MapPin className="w-4 h-4 shrink-0" />
+                                <span className="min-w-0 break-words">{data.address},{data.location}</span>
                             </p>
                         </div>
                     </div>

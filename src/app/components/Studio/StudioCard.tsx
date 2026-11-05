@@ -38,7 +38,7 @@ export default function StudioCard({ studioData }: { studioData: StudioTypes }) 
             src={studioData?.images[0][1]}
             alt={ studioData.title}
             sizes="(min-width: 640px) 400px, 100vw"
-            className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
 
           {/* Top-left badges */}
@@ -91,7 +91,7 @@ export default function StudioCard({ studioData }: { studioData: StudioTypes }) 
             <span>{studioData.location}</span>
           </div>
 
-          <h3 className="text-xl font-bold leading-snug tracking-tight">
+          <h3 className="text-lg font-bold leading-snug tracking-tight sm:text-xl">
             {studioData.title}
           </h3>
 
@@ -117,9 +117,9 @@ export default function StudioCard({ studioData }: { studioData: StudioTypes }) 
         </CardContent>
 
         {/* Footer */}
-        <CardFooter className="mx-5 items-end justify-between border-t px-0 pb-5 pt-4">
+        <CardFooter className="mx-5 flex-wrap items-end justify-between gap-3 border-t px-0 pb-5 pt-4">
           <div>
-            <p className="text-3xl font-bold leading-none tracking-tight">
+            <p className="text-2xl font-bold leading-none tracking-tight sm:text-3xl">
               ${studioData.hourtlyRate}
               <span className="ml-1 text-base font-normal text-muted-foreground">
                 / hr
@@ -134,7 +134,7 @@ export default function StudioCard({ studioData }: { studioData: StudioTypes }) 
 
           <Link
             href={`/studios/${studioData._id}`}
-            className="h-11 rounded-xl px-5 font-semibold"
+            className="inline-flex h-11 shrink-0 items-center gap-1.5 whitespace-nowrap rounded-xl px-5 font-semibold"
           >
               View Details
               <ArrowUpRight className="size-4" />

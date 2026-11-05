@@ -13,7 +13,7 @@ import { cn } from "@/lib/utils"
 export default function HeroBanner() {
 
   return (
-    <section className="relative isolate flex min-h-[92vh] items-end overflow-hidden bg-neutral-950 text-white">
+    <section className="relative isolate flex min-h-[85vh] items-end overflow-hidden bg-neutral-950 text-white sm:min-h-[92vh]">
       {/* Background photo, desaturated */}
       <img
         src="https://images.unsplash.com/photo-1617463874381-85b513b3e991?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D"
@@ -40,15 +40,15 @@ export default function HeroBanner() {
         className="pointer-events-none absolute right-0 top-0 -z-10 h-full w-px bg-gradient-to-b from-amber-300/60 via-white/10 to-transparent"
       />
 
-      <div className="mx-auto grid w-full max-w-7xl gap-12 px-6 pb-16 pt-32 lg:grid-cols-[1fr_auto] lg:items-end lg:pb-20">
+      <div className="mx-auto grid w-full max-w-7xl gap-8 px-4 pb-14 pt-28 sm:gap-12 sm:px-6 sm:pb-16 sm:pt-32 lg:grid-cols-[1fr_auto] lg:items-end lg:pb-20">
         {/* Left: headline + copy + CTA */}
         <div>
-          <h1 className="max-w-4xl text-5xl font-bold leading-[0.98] tracking-[-0.03em] sm:text-7xl lg:text-8xl">
+          <h1 className="max-w-4xl text-4xl font-bold leading-[0.98] tracking-[-0.03em] sm:text-6xl md:text-7xl lg:text-8xl">
             Where Vision Meets
             <span className="block text-white/45">Production Space.</span>
           </h1>
 
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-white/75">
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/75 sm:mt-8 sm:text-lg">
             Rent world-class daylight infinity cycloramas, acoustic film
             stages, podcast suites, and mastering rooms by the hour with
             guaranteed host liability protection.
@@ -56,7 +56,7 @@ export default function HeroBanner() {
 
           <Link
             href="/studios"
-            className="group mt-10 inline-flex items-center gap-3 rounded-full bg-amber-400 py-2 pl-8 pr-2 text-sm font-semibold text-neutral-950 transition-colors hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300"
+            className="group mt-8 inline-flex items-center gap-3 rounded-full bg-amber-400 py-2 pl-7 pr-2 text-sm font-semibold text-neutral-950 transition-colors hover:bg-amber-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-300 sm:mt-10 sm:pl-8"
           >
             Explore Studios
             <span className="grid size-10 place-items-center rounded-full bg-neutral-950 text-amber-400 transition-transform duration-300 group-hover:translate-x-1">

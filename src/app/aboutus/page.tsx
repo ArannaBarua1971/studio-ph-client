@@ -39,7 +39,7 @@ export default function AboutPage() {
           <p className="text-xs font-semibold uppercase tracking-wide text-amber-400">
             About StudioSpace
           </p>
-          <h1 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          <h1 className="mt-3 max-w-3xl text-3xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
             Where Vision Meets Production Space.
           </h1>
           <p className="mt-5 max-w-2xl text-sm leading-relaxed text-neutral-400 sm:text-base">
@@ -57,7 +57,7 @@ export default function AboutPage() {
             <p className="text-[11px] font-semibold uppercase tracking-wide text-amber-600">
               Our mission
             </p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+            <h2 className="mt-2 text-2xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
               Production spaces open to every creator
             </h2>
           </div>
@@ -80,7 +80,7 @@ export default function AboutPage() {
       <section className="bg-[#faf9f7] px-4 pb-16 sm:px-6 sm:pb-24 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
+            <h2 className="text-2xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
               What We Stand For
             </h2>
             <p className="mx-auto mt-2 max-w-xl text-xs text-neutral-500 sm:text-sm">
@@ -115,7 +115,7 @@ export default function AboutPage() {
       <section className="bg-[#1c1917] px-4 py-16 sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-6xl flex-col gap-8 md:flex-row md:items-center md:justify-between">
           <div className="max-w-2xl">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h2 className="text-2xl font-bold tracking-tight text-white sm:text-4xl">
               Ready to create?
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-neutral-400">
@@ -123,7 +123,7 @@ export default function AboutPage() {
               hosting.
             </p>
           </div>
-          <div className="flex shrink-0 items-center gap-4">
+          <div className="flex flex-wrap shrink-0 items-center gap-3 sm:gap-4">
             <Button
               variant="outline"
               className="h-11 rounded-xl border-white/25 bg-transparent px-5 text-xs font-semibold text-neutral-200 hover:bg-white/5 hover:text-white"

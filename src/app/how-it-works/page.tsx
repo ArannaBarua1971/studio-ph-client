@@ -40,14 +40,14 @@ const STEPS: Step[] = [
 
 export default function HowItWorks() {
   return (
-    <section className="bg-stone-50 py-16">
+    <section className="bg-stone-50 py-12 sm:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Heading */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
           <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
             How It Works
           </span>
-          <h2 className="text-3xl font-bold text-stone-900 mt-1">
+          <h2 className="text-2xl font-bold text-stone-900 mt-1 sm:text-3xl">
             Book a Creative Studio in 4 Simple Steps
           </h2>
           <p className="mt-2 text-sm text-stone-500">
@@ -56,7 +56,7 @@ export default function HowItWorks() {
         </div>
 
         {/* Steps */}
-        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {/* connector line (desktop only) */}
           <div className="hidden lg:block absolute top-[52px] left-[12%] right-[12%] border-t-2 border-dashed border-amber-300" />
 
@@ -89,7 +89,7 @@ export default function HowItWorks() {
         </div>
 
         {/* Host CTA */}
-        <div className="mt-10 rounded-2xl bg-stone-900 border border-stone-800 p-6 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="mt-10 rounded-2xl bg-stone-900 border border-stone-800 p-5 sm:p-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-center sm:text-left">
             <h3 className="text-lg font-bold text-white">Own a studio space?</h3>
             <p className="text-xs text-stone-400 mt-1">
@@ -98,7 +98,7 @@ export default function HowItWorks() {
           </div>
           <Link
             href="/add-studio"
-            className="inline-flex items-center gap-2 px-6 py-2.5 text-xs font-bold text-stone-950 bg-amber-400 hover:bg-amber-300 rounded-xl shadow-sm transition-colors shrink-0"
+            className="inline-flex w-full items-center justify-center gap-2 px-6 py-2.5 text-xs font-bold text-stone-950 bg-amber-400 hover:bg-amber-300 rounded-xl shadow-sm transition-colors shrink-0 sm:w-auto"
           >
             List Your Studio
             <ArrowRight className="w-4 h-4" />

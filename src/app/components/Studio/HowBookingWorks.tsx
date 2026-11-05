@@ -29,14 +29,14 @@ const steps = [
 
 export default function HowBookingWorks() {
   return (
-    <section id="howworks">
-      <div className="mx-auto max-w-6xl">
+    <section id="howworks" className="py-14 sm:py-16">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Heading */}
         <div className="text-center">
           <p className="text-[11px] font-semibold uppercase tracking-wide text-amber-600">
             Clear, transparent production lifecycle
           </p>
-          <h2 className="mt-3 text-4xl font-bold tracking-tight text-neutral-900">
+          <h2 className="mt-3 text-3xl font-bold tracking-tight text-neutral-900 sm:text-4xl">
             How Booking Works
           </h2>
           <p className="mx-auto mt-2 max-w-xl text-xs text-neutral-500">
@@ -46,7 +46,7 @@ export default function HowBookingWorks() {
         </div>
 
         {/* Steps */}
-        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-10 grid gap-5 sm:mt-14 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step) => (
             <Card
               key={step.number}

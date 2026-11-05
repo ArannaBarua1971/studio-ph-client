@@ -76,7 +76,7 @@ export default function AddStudioPage() {
         }
     }
     return (
-        <div className="min-h-screen bg-stone-50 py-10">
+        <div className="min-h-screen bg-stone-50 py-8 sm:py-10">
             <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Back Link */}
                 <Link
@@ -92,7 +92,7 @@ export default function AddStudioPage() {
                     <span className="text-xs font-semibold text-amber-600 uppercase tracking-wider">
                         Host Workspace Portal
                     </span>
-                    <h1 className="text-3xl font-bold text-stone-900 mt-1">
+                    <h1 className="text-2xl font-bold text-stone-900 mt-1 sm:text-3xl">
                         List a New Creative Studio Space
                     </h1>
                     <p className="mt-1 text-sm text-stone-500">
@@ -267,7 +267,7 @@ export default function AddStudioPage() {
                                     />
                                 ))}
 
-                                <div className="mt-2.5 flex items-center gap-2 overflow-x-auto pb-1">
+                                <div className="mt-2.5 flex items-center gap-2 overflow-x-auto pb-1 [-webkit-overflow-scrolling:touch]">
                                     <span className="text-[11px] text-stone-400 shrink-0">
                                         Presets:
                                     </span>
@@ -335,10 +335,10 @@ export default function AddStudioPage() {
                         </div>
 
                         {/* Buttons */}
-                        <div className="pt-4 border-t border-stone-200 flex items-center justify-end gap-3">
+                        <div className="pt-4 border-t border-stone-200 flex flex-col-reverse gap-3 sm:flex-row sm:items-center sm:justify-end">
                             <Link
                                 href="/mylistings"
-                                className="px-5 py-2.5 text-xs font-semibold text-stone-600 hover:text-stone-900 rounded-xl transition-colors"
+                                className="px-5 py-2.5 text-center text-xs font-semibold text-stone-600 hover:text-stone-900 rounded-xl transition-colors"
                             >
                                 Cancel
                             </Link>
