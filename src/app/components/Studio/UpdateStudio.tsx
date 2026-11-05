@@ -59,6 +59,7 @@ export function UpdateStudio({ studioData }: { studioData: StudioTypes }) {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        setIsSubmitting(true)
         const formData = new FormData(e.currentTarget);
         const data = Object.fromEntries(formData.entries())
 
@@ -80,6 +81,7 @@ export function UpdateStudio({ studioData }: { studioData: StudioTypes }) {
             showToast({ message: "Studio is Updated" })
             redirect("/my-listings")
         } else {
+            setIsSubmitting(false)
             showToast({ message: "Studio is not updated successfully", type: "warning" })
         }
     };
