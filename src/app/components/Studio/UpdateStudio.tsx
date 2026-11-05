@@ -66,7 +66,7 @@ export function UpdateStudio({ studioData }: { studioData: StudioTypes }) {
         const otherData = Object.fromEntries(Object.entries(data).filter(([key, value]) => !key.startsWith("images_")))
         const token = await getTokenForClient()
         const payload = { ...studioData, ...otherData, images, features: amenities };
-        const res = await fetch(`http://localhost:5000/studios`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -80,7 +80,7 @@ export function UpdateStudio({ studioData }: { studioData: StudioTypes }) {
             showToast({ message: "Studio is Updated" })
             redirect("/my-listings")
         } else {
-            showToast({ message: "Studio is updated successfully", type: "warning" })
+            showToast({ message: "Studio is not updated successfully", type: "warning" })
         }
     };
 
