@@ -28,15 +28,21 @@ export default function LoginPage() {
 
     if (!error) {
       redirect("/")
-    }else{
-      showToast({message:error.message,type:"warning"})
+    } else {
+      showToast({ message: error.message, type: "warning" })
     }
   }
 
   const signInWithGoogle = async () => {
-    const data = await signIn.social({
-      provider: "google",
-    });
+    try {
+      const data = await signIn.social({
+        provider: "google",
+      });
+
+    } catch (error) {
+      showToast({ message: "sign up is not happend successfully", type: "warning" })
+      redirect("/login")
+    }
   };
   return (
     <main className="flex min-h-screen items-center justify-center bg-neutral-100 p-4 sm:p-8">
@@ -114,7 +120,7 @@ export default function LoginPage() {
           <Button
             variant="outline"
             className="h-11 w-full rounded-xl border-neutral-300 text-sm font-medium text-neutral-800"
-            onClick={()=> signInWithGoogle()}
+            onClick={() => signInWithGoogle()}
           >
             <svg viewBox="0 0 24 24" className="size-[18px]" aria-hidden="true">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1Z" />

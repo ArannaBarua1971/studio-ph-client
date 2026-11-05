@@ -26,7 +26,7 @@ export default function SignUpPage() {
       name: string, email: string, password: string, image: string
     }
 
-    const error=getPasswordError(data.password)
+    const error = getPasswordError(data.password)
 
     if (!error.length) {
       const { data: submitData, error: er } = await signUp.email({
@@ -48,9 +48,15 @@ export default function SignUpPage() {
 
   }
   const signInWithGoogle = async () => {
-    const data = await signIn.social({
-      provider: "google",
-    });
+    try {
+      const data = await signIn.social({
+        provider: "google",
+      });
+
+    } catch (error) {
+      showToast({ message: "sign up is not happend successfully", type: "warning" })
+      redirect("/login")
+    }
   };
   return (
     <main className="flex min-h-screen items-center justify-center bg-neutral-100 p-4 sm:p-8">
