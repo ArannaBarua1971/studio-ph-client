@@ -34,7 +34,7 @@ import getTokenForServer from "@/lib/helper/getTokenForServer";
 export default async function StudioListings() {
     const token = await getTokenForServer()
     const data = await auth.api.getSession({ headers: await headers() })
-    const res = await fetch(`http://localhost:5000/mylistings/${data?.user.email}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/mylistings/${data?.user.email}`, {
         headers: {
             Authorization: `Bearer ${token}`
         }

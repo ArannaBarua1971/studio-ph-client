@@ -4,9 +4,9 @@ async function page({ searchParams }: { searchParams: Promise<{ category: string
     const params = await searchParams;
     let res;
     if (params.category) {
-        res = await fetch(`http://localhost:5000/studios/${params.category}`);
+        res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios/${params.category}`);
     }else{
-        res = await fetch(`http://localhost:5000/studios`);
+        res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`);
     }
     const data = await res.json()
     return (

@@ -53,7 +53,7 @@ export default function AddStudioPage() {
             const token =await getTokenForClient()
 
             const payload = { ...otherData, images, user_email: user, features: amenities };
-            const res = await fetch(`http://localhost:5000/studios`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

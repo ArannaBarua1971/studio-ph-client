@@ -5,9 +5,9 @@ import HowBookingWorks from "./components/Studio/HowBookingWorks";
 import StudioGrid from "./components/Studio/StudioGrid";
 
 export default async function Home() {
-  const studioRes = await fetch(`http://localhost:5000/studios`);
+  const studioRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`);
   const studioData = await studioRes.json();
-  const categoryRes = await fetch(`http://localhost:5000/category`);
+  const categoryRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/category`);
   const cateRoryData = await categoryRes.json();
 
   return (
