@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export default function showToast({ message, type = "success" }) {
+export default function showToast({ message, type = "success" }:{message:string|undefined,type?:string}) {
   if (type == "warning") {
     toast.warn(message, {
       position: "top-right",
