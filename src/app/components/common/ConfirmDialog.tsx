@@ -14,7 +14,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { Button } from "@/components/ui/button"
-import { ReactNode } from "react"
+import { ReactNode, useState } from "react"
 import showToast from "@/lib/helper/toaster"
 import { useRouter } from "next/navigation"
 
@@ -33,7 +33,9 @@ interface ConfirmDialogProps {
 }
 export default function ConfirmDialog({ buttonName, icon, question, description, className, data, url, toastMessage, method = "DELETE", decisionBtnName = "Delete",token }: ConfirmDialogProps) {
     const route = useRouter()
+    const [isSubmitting,setIsSubmitting]=useState(false)
     const deleteStudio = async () => {
+        setIsSubmitting(true)
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}/${data}`, {
             method: method,
             headers: {
@@ -45,6 +47,7 @@ export default function ConfirmDialog({ buttonName, icon, question, description,
             showToast({ message: toastMessage })
             route.refresh()
         }
+        setIsSubmitting(false)
     }
     return (
         <AlertDialog>
@@ -64,7 +67,7 @@ export default function ConfirmDialog({ buttonName, icon, question, description,
                 <AlertDialogFooter>
                     <AlertDialogCancel variant="outline">Cancel</AlertDialogCancel>
                     <AlertDialogCancel variant="destructive" onClick={deleteStudio} >
-                        {decisionBtnName}</AlertDialogCancel>
+                        {isSubmitting? "checking....": decisionBtnName}</AlertDialogCancel>
                 </AlertDialogFooter>
             </AlertDialogContent>
         </AlertDialog>
