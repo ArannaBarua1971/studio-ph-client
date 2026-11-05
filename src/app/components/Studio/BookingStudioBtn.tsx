@@ -15,62 +15,45 @@ function BookingStudioBtn({
     studioDetails: StudioTypes;
     userData: { email: string };
 }) {
-    const [isBooked, setIsBooked] = useState(false);
-    const [isLoading, setIsLoading] = useState(true);
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isBooked, setIsBooked] = useState(false)
+    const [isLoading, setIsLoading] = useState(true)
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
 
     useEffect(() => {
-        let isMounted = true;
-
+        const payload = new URLSearchParams({
+            user_email: userData.email,
+            studio_id: studioDetails._id,
+        } as {
+            user_email: string,
+            studio_id: string
+        })
         const checkBooking = async () => {
-            setIsLoading(true);
-
             try {
-                const payload = new URLSearchParams({
-                    user_email: userData.email,
-                    studio_id: studioDetails._id,
-                } as {
-                    user_email: string,
-                    studio_id: string
-                });
-
                 const res = await fetch(
-                    `${process.env.NEXT_PUBLIC_API_URL}/checkBookingStudio?${payload}`
-                );
+                    `${process.env.NEXT_PUBLIC_API_URL}/checkBookingStudio?${payload}`,
+                )
 
-                if (!res.ok) {
-                    showToast({ message: "Failed to check booking status",type:"warning" });
-                }
-
-                const data = await res.json();
-
-                if (isMounted) {
-                    setIsBooked(Boolean(data?.data?.Booked));
-                }
-            } catch (error) {
-                console.error(error);
-                if (isMounted) {
-                    showToast({ message: "Failed to check booking status",type:"warning" });
+                if (res.ok) {
+                    const data = await res.json()
+                    setIsLoading(false)
+                    if (data?.data?.Booked) setIsBooked(true)
                 }
             } finally {
-                if (isMounted) {
-                    setIsLoading(false);
-                }
+                setIsLoading(false)
             }
-        };
 
-        checkBooking();
+        }
 
-        return () => {
-            isMounted = false;
-        };
-    }, [studioDetails._id, userData.email]);
+
+        checkBooking()
+
+    }, [studioDetails?._id, userData?.email])
 
     const handleSubmit = async () => {
+
         if (isSubmitting || isBooked) return;
-
-        setIsSubmitting(true);
-
+        setIsSubmitting(true)
         try {
             const { _id, ...studio } = studioDetails;
 
@@ -84,45 +67,28 @@ function BookingStudioBtn({
 
             const token = await getTokenForClient();
 
-            if (!token) {
-                throw new Error("Authentication token not found");
-            }
-
             const res = await fetch(
                 `${process.env.NEXT_PUBLIC_API_URL}/bookingStudio`,
                 {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                        ,
+                        Authorization: ` Bearer ${token}`
                     },
-                    body: JSON.stringify(payload),
-                }
-            );
+                    body: JSON.stringify(payload)
+                })
 
-            if (!res.ok) {
-                const errorData = await res.json().catch(() => null);
-                throw new Error(
-                    errorData?.message || "Failed to book studio"
-                );
+            if (res.ok) {
+                showToast({ message: "Studio booked successfully" })
+                setIsBooked(true)
+                setIsSubmitting(false)
             }
-
-            showToast({ message: "Studio booked successfully" });
-            setIsBooked(true);
-        } catch (error) {
-            console.error(error);
-
-            showToast({
-                message:
-                    error instanceof Error
-                        ? error.message
-                        : "Something went wrong",
-            });
-        } finally {
-            setIsSubmitting(false);
         }
-    };
-
+        finally {
+            setIsSubmitting(false)
+        }
+    }
     return (
         <Button
             disabled={isLoading || isSubmitting || isBooked}
