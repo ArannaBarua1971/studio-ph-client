@@ -34,7 +34,7 @@ interface ConfirmDialogProps {
 export default function ConfirmDialog({ buttonName, icon, question, description, className, data, url, toastMessage, method = "DELETE", decisionBtnName = "Delete",token }: ConfirmDialogProps) {
     const route = useRouter()
     const deleteStudio = async () => {
-        const res = await fetch(`http://localhost:5000/${url}/${data}`, {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}/${data}`, {
             method: method,
             headers: {
                 Authorization: `Bearer ${token}`
