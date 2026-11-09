@@ -9,6 +9,9 @@ export default async function Home() {
   const studioData = await studioRes.json();
   const categoryRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/category`);
   const cateRoryData = await categoryRes.json();
+
+  const categories=cateRoryData.data.slice(0, 3)
+  const studios=studioData.data.slice(0, 6)
   return (
     <div>
       <HomeBanner />
@@ -28,7 +31,7 @@ export default async function Home() {
               daylight environments.
             </p>
           </header>
-          <CategoryGrid categories={cateRoryData.data.slice(0, 3)} />
+          <CategoryGrid categories={categories} />
         </section>
 
         <section>
@@ -44,7 +47,7 @@ export default async function Home() {
               and sound recordists.
             </p>
           </header>
-          <StudioGrid studios={studioData.data.slice(0, 6)} />
+          <StudioGrid studios={studios} />
         </section>
       </div>
 
