@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import CategoryGrid from "./components/Category/CategoryGrid";
 import HomeBanner from "./components/HomeBanner";
 import HostGuarantee from "./components/Hostguarantee";
 import HowBookingWorks from "./components/Studio/HowBookingWorks";
 import StudioGrid from "./components/Studio/StudioGrid";
+import Loading from "./components/common/Loading";
 
 export default async function Home() {
   const studioRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`);
@@ -10,8 +12,8 @@ export default async function Home() {
   const categoryRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/category`);
   const cateRoryData = await categoryRes.json();
 
-  const categories=cateRoryData.data.slice(0, 3)
-  const studios=studioData.data.slice(0, 6)
+  const categories = cateRoryData.data.slice(0, 3)
+  const studios = studioData.data.slice(0, 6)
   return (
     <div>
       <HomeBanner />
@@ -31,7 +33,9 @@ export default async function Home() {
               daylight environments.
             </p>
           </header>
-          <CategoryGrid categories={categories} />
+          <Suspense fallback={<Loading />}>
+            <CategoryGrid categories={categories} />
+          </Suspense>
         </section>
 
         <section>
@@ -47,7 +51,9 @@ export default async function Home() {
               and sound recordists.
             </p>
           </header>
-          <StudioGrid studios={studios} />
+          <Suspense fallback={<Loading />}>
+            <StudioGrid studios={studios} />
+          </Suspense>
         </section>
       </div>
 
