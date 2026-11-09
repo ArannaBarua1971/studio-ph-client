@@ -36,6 +36,7 @@ export default function ConfirmDialog({ buttonName, icon, question, description,
     const [isSubmitting,setIsSubmitting]=useState(false)
     const deleteStudio = async () => {
         setIsSubmitting(true)
+        showToast({ message: `processing:${toastMessage}` ,type:"info"})
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/${url}/${data}`, {
             method: method,
             headers: {

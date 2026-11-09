@@ -1,15 +1,13 @@
-import { Suspense } from "react";
 import CategoryGrid from "./components/Category/CategoryGrid";
 import HomeBanner from "./components/HomeBanner";
 import HostGuarantee from "./components/Hostguarantee";
 import HowBookingWorks from "./components/Studio/HowBookingWorks";
 import StudioGrid from "./components/Studio/StudioGrid";
-import Loading from "./components/common/Loading";
 
 export default async function Home() {
-  const studioRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`);
+  const studioRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/studios`,{ cache: "no-store" });
   const studioData = await studioRes.json();
-  const categoryRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/category`);
+  const categoryRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/category`,{ cache: "no-store" });
   const cateRoryData = await categoryRes.json();
 
   const categories = cateRoryData.data.slice(0, 3)
@@ -18,8 +16,7 @@ export default async function Home() {
     <div>
       <HomeBanner />
 
-      {/* Fluid container: 16px on phones, up to 32px on desktop, capped at 1280px */}
-      <div className="mx-auto my-10 flex w-full max-w-7xl flex-col gap-10 px-4 sm:px-6 md:my-14 md:gap-14 lg:px-8">
+    <div className="mx-auto my-10 flex w-full max-w-7xl flex-col gap-10 px-4 sm:px-6 md:my-14 md:gap-14 lg:px-8">
         <section>
           <header className="space-y-1 pb-5 sm:pb-8">
             <p className="text-xs font-semibold uppercase tracking-wider text-amber-600">
@@ -33,9 +30,7 @@ export default async function Home() {
               daylight environments.
             </p>
           </header>
-          <Suspense fallback={<Loading />}>
-            <CategoryGrid categories={categories} />
-          </Suspense>
+          <CategoryGrid categories={categories} />
         </section>
 
         <section>
@@ -51,9 +46,7 @@ export default async function Home() {
               and sound recordists.
             </p>
           </header>
-          <Suspense fallback={<Loading />}>
-            <StudioGrid studios={studios} />
-          </Suspense>
+          <StudioGrid studios={studios} />
         </section>
       </div>
 
